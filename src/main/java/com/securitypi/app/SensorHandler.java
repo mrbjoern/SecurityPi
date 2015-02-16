@@ -1,5 +1,7 @@
 package com.securitypi.app;
 
+import java.text.DecimalFormat;
+
 /**
  * Class for handling sensors on the pi.
  *
@@ -7,7 +9,9 @@ package com.securitypi.app;
  * set of components. At the time of writing, only a motion sensor and
  * temperature sensor.
  */
-public class ComponentHandler {
+public class SensorHandler {
+    private final double MIN_TEMP = -30.0;
+    private final double MAX_TEMP = 50.0;
 
     private boolean state;
 
@@ -18,7 +22,7 @@ public class ComponentHandler {
     /**
      * Set up sensors. Run sanity checks.
      */
-    public ComponentHandler() {
+    public SensorHandler() {
         state = false;
 
         // Start the component handler.
@@ -31,6 +35,20 @@ public class ComponentHandler {
      */
     public boolean getState() {
         return state;
+    }
+
+    /**
+     * Read the temperature from sensor.
+     * @return Temperature in Celsius.
+     */
+    public double getTemperature() {
+        double temperature = Math.random() * (40.0 - (-20.0) + (-20.0));
+
+        if(temperature > MAX_TEMP || temperature < MIN_TEMP) {
+            // Sensor values are out of range. Probably a malfunction.
+        }
+
+        return Math.round(temperature*10)/10.0d;
     }
 
     /**

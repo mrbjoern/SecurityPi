@@ -1,6 +1,5 @@
 package com.securitypi.app;
 
-import javax.imageio.IIOException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.util.Date;
  */
 public class LogModule {
 
-    private String pathToLogile;
+    private String pathToLogfile;
     private String logfileName;
 
     /**
@@ -37,7 +36,7 @@ public class LogModule {
             setDefaultLocation();
         }
         else {
-            pathToLogile = path;
+            pathToLogfile = path;
         }
 
         if(name == null) {
@@ -57,12 +56,9 @@ public class LogModule {
      * @return True if line was added successfully.
      */
     public boolean addSensorReadingToLog(double temperature, boolean motionDetected) {
-        if(writeToLog("Temp: " + temperature + "c, Motion detected: " + motionDetected)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        String message = "Temp: " + temperature + "C, Motion detected: " + motionDetected;
+
+        return writeToLog(message);
     }
 
     /**
@@ -73,12 +69,7 @@ public class LogModule {
      * @return True if line was added successfully.
      */
     public boolean addSystemEventToLog(String systemMessage) {
-        if(writeToLog(systemMessage)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return writeToLog(systemMessage);
     }
 
     /**
@@ -103,7 +94,7 @@ public class LogModule {
             return false;
         }
 
-        String filename = pathToLogile + logfileName;
+        String filename = pathToLogfile + logfileName;
         String logMessage = getCurrentDate() + " - " + message;
 
         try {
@@ -120,13 +111,13 @@ public class LogModule {
     }
 
     private boolean checkDirectory() {
-        File logPath = new File(pathToLogile);
+        File logPath = new File(pathToLogfile);
 
         if(!logPath.exists()) {
             // Directory does not exist, and we must create it.
             try {
                 logPath.mkdirs();
-                System.out.println("New path for logfiles created at " + pathToLogile);
+                System.out.println("New path for log files created at " + pathToLogfile);
                 return true;
             }
             catch (SecurityException e) {
@@ -142,7 +133,7 @@ public class LogModule {
     private boolean setDefaultLocation() {
         String username = System.getProperty("user.name");
 
-        pathToLogile = "/home/" + username + "/securitypi/log/";
+        pathToLogfile = "/home/" + username + "/securitypi/log/";
         return true;
     }
 

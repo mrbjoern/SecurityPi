@@ -11,18 +11,20 @@ package com.securitypi.app;
 public class SecurityPiApp {
 
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
 
         // TODO: Start module controller and set up sensors.
 
         // TODO: Implement logging from sensors.
 
-        LogModule lm = new LogModule();
-        lm.addSystemEventToLog("This is a test.");
-        lm.addSensorReadingToLog(3.14, true);
-        //System.out.println(lm.getCurrentDate());
-
         // TODO: Implement interface for interaction with server.
 
+        new SecurityPiApp().initialize();
+    }
+
+    private void initialize() {
+        LogModule lm = new LogModule();
+        lm.addSystemEventToLog("System started.");
+
+        ModuleController mc = new ModuleController(lm);
     }
 }
