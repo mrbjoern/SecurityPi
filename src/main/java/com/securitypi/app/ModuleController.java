@@ -10,7 +10,9 @@ public class ModuleController {
 
     /**
      * When initialized, the module is inactive and sensors
-     * is turned OFF.
+     * is turned OFF. Some sensors require some time to start
+     * and the module controller should not start reading
+     * until all sensors are ready.
      */
     public ModuleController() {
         state = false;
@@ -24,20 +26,5 @@ public class ModuleController {
      */
     public boolean getState() {
         return state;
-    }
-
-    /**
-     * Turns the controller ON and handles sensors.
-     * @return True if everything went OK.
-     */
-    public boolean setStateOn() {
-        if(componenthandler.startHandler()) {
-            state = true;
-            return true;
-        }
-        else {
-            state = false;
-            return false;
-        }
     }
 }
