@@ -10,6 +10,15 @@ package com.securitypi.app;
  */
 public class SecurityPiApp {
 
+    /**
+     * SecurityPi supports a few configuration parameters.
+     *
+     * -h (--help) to print help menu
+     * -c PATH (--config) for custom config file
+     * -v (--version) to print version number
+     *
+     * @param args configuration parameters
+     */
     public static void main(String[] args) {
 
         // TODO: Start module controller and set up sensors.
@@ -18,13 +27,43 @@ public class SecurityPiApp {
 
         // TODO: Implement interface for interaction with server.
 
-        new SecurityPiApp().initialize();
+
+        if(args.length < 0) {
+            if(args[0].compareTo("-v") == 0 || args[0].compareTo("--version") == 0) {
+                System.out.println(getVersion());
+                System.exit(0);
+            }
+            else if(args[0].compareTo("-h") == 0 || args[0].compareTo("--help") == 0) {
+                printHelp();
+                System.exit(0);
+            }
+            else if(args[0].compareTo("-c") == 0 || args[0].compareTo("--config") == 0) {
+                System.out.println("NOT IMPLEMENTED");
+                System.exit(0);
+            }
+            else {
+                System.out.println("Not a valid parameter. Try -h for help.");
+                System.exit(0);
+            }
+        }
+        else {
+            initialize();
+        }
+
     }
 
-    private void initialize() {
+    private static void initialize() {
         LogModule lm = new LogModule();
         lm.addSystemEventToLog("System started.");
 
-        ModuleController mc = new ModuleController(lm);
+        new ModuleController(lm);
+    }
+
+    private static void printHelp() {
+
+    }
+
+    private static String getVersion() {
+        return "Version 0.1";
     }
 }
