@@ -14,7 +14,6 @@ public class SecurityPiApp {
      * SecurityPi supports a few configuration parameters.
      *
      * -h (--help) to print help menu
-     * -c PATH (--config) for custom config file
      * -v (--version) to print version number
      *
      * @param args configuration parameters
@@ -27,7 +26,6 @@ public class SecurityPiApp {
 
         // TODO: Implement interface for interaction with server.
 
-
         if(args.length < 0) {
             if(args[0].compareTo("-v") == 0 || args[0].compareTo("--version") == 0) {
                 System.out.println(getVersion());
@@ -35,10 +33,6 @@ public class SecurityPiApp {
             }
             else if(args[0].compareTo("-h") == 0 || args[0].compareTo("--help") == 0) {
                 printHelp();
-                System.exit(0);
-            }
-            else if(args[0].compareTo("-c") == 0 || args[0].compareTo("--config") == 0) {
-                System.out.println("NOT IMPLEMENTED");
                 System.exit(0);
             }
             else {
@@ -53,10 +47,7 @@ public class SecurityPiApp {
     }
 
     private static void initialize() {
-        LogModule lm = new LogModule();
-        lm.addSystemEventToLog("System started.");
-
-        new ModuleController(lm);
+        new ModuleController();
     }
 
     private static void printHelp() {

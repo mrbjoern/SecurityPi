@@ -1,0 +1,16 @@
+### Config file for SecurityPi
+#
+#
+#   SENSOR READING
+#
+#   Time interval on regular readings in seconds.
+reading.time=60
+#
+#
+#   LOGGING
+#
+#   Path to logfile. Default is SecurityPi's root folder
+#   log.path=/path/to/file/
+#
+#   Name of logfile. Default is log.txt
+#   log.name=default.txt

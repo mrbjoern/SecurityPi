@@ -10,42 +10,17 @@ import java.util.Date;
 /**
  * Handles logging of events to logfile.
  */
-public class LogModule {
+public final class LogModule {
 
-    private String pathToLogfile;
-    private String logfileName;
+    // TODO: Implement static class for handling default config etc.
+
+    private static String pathToLogfile;
+    private static String logfileName;
 
     /**
      * Default constructor. Use predefined path and filename.
      */
-    public LogModule() {
-        setDefaultLocation();
-        logfileName = "log.txt";
-    }
-
-    /**
-     * Constructor for initializing log module and set up writing
-     * to logfile. If no logfile exists, a new file will be created.
-     * Either parameter may be null. If so, default values will be used.
-     * @param path Full path
-     * @param name Name of logfile
-     */
-    public LogModule(String path, String name) {
-
-        if(path == null) {
-            setDefaultLocation();
-        }
-        else {
-            pathToLogfile = path;
-        }
-
-        if(name == null) {
-            logfileName = "log.txt";
-        }
-        else {
-            logfileName = name;
-        }
-
+    private LogModule() {
     }
 
     /**
@@ -55,7 +30,7 @@ public class LogModule {
      * @param motionDetected True if motion is detected.
      * @return True if line was added successfully.
      */
-    public boolean addSensorReadingToLog(double temperature, boolean motionDetected) {
+    public static boolean addSensorReadingToLog(double temperature, boolean motionDetected) {
         String message = "Temp: " + temperature + "C, Motion detected: " + motionDetected;
 
         return writeToLog(message);
@@ -68,7 +43,7 @@ public class LogModule {
      * @param systemMessage System message to be written.
      * @return True if line was added successfully.
      */
-    public boolean addSystemEventToLog(String systemMessage) {
+    public static boolean addSystemEventToLog(String systemMessage) {
         return writeToLog(systemMessage);
     }
 
@@ -76,7 +51,7 @@ public class LogModule {
      * Get the current system time and date to be written in logfile.
      * @return Date and time on format yyyy-MM-dd HH:mm:ss
      */
-    private String getCurrentDate() {
+    private static String getCurrentDate() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 
@@ -88,13 +63,12 @@ public class LogModule {
      * @param message Message to be written.
      * @return True if write is successful.
      */
-    private boolean writeToLog(String message) {
+    private static boolean writeToLog(String message) {
 
-        if(!checkDirectory()) {
-            return false;
-        }
+        // Get the logfile from config.
+        String filename = ConfigHandler.getConfigFile();
 
-        String filename = pathToLogfile + logfileName;
+        // Message to be written.
         String logMessage = getCurrentDate() + " - " + message;
 
         try {
@@ -109,32 +83,4 @@ public class LogModule {
 
         return true;
     }
-
-    private boolean checkDirectory() {
-        File logPath = new File(pathToLogfile);
-
-        if(!logPath.exists()) {
-            // Directory does not exist, and we must create it.
-            try {
-                logPath.mkdirs();
-                System.out.println("New path for log files created at " + pathToLogfile);
-                return true;
-            }
-            catch (SecurityException e) {
-                System.err.println("Directory could not be created. Check permissions.");
-                return false;
-            }
-        }
-        else {
-            return true;
-        }
-    }
-
-    private boolean setDefaultLocation() {
-        String username = System.getProperty("user.name");
-
-        pathToLogfile = "/home/" + username + "/securitypi/log/";
-        return true;
-    }
-
 }

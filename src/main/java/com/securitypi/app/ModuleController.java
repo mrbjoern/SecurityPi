@@ -7,10 +7,12 @@ package com.securitypi.app;
  * from sensor components.
  */
 public class ModuleController {
-    private LogModule lm;
+    private ConfigHandler ch;
 
     private boolean state;
     private SensorHandler sensorHandler;
+
+    // private final GpioController gpio = GpioFactory.getInstance();
 
     /**
      * When initialized, the module is inactive and sensors
@@ -20,18 +22,25 @@ public class ModuleController {
      * be handled by the sensor handler. The Module Controller
      * should block until sensors are ready.
      */
-    public ModuleController(LogModule lm) {
-        this.lm = lm;
+    public ModuleController() {
+        // Set up the config handler.
+        ch = new ConfigHandler();
+
+        LogModule.addSystemEventToLog("System started.");
+
         state = false;
 
         sensorHandler = new SensorHandler();
 
         if(sensorHandler.getState()) {
-            lm.addSystemEventToLog("Sensor components started successfully.");
+            LogModule.addSystemEventToLog("Sensor components started successfully.");
             state = true;
+
+            // If the sensors are up and running, a listener should be set up
+            // to check the activity on sensors on a specified time interval.
         }
         else {
-            lm.addSystemEventToLog("Initialisation of sensors failed. System will not report activity on sensors.");
+            LogModule.addSystemEventToLog("Initialisation of sensors failed. System will not report activity on sensors.");
         }
 
         System.out.println(sensorHandler.getTemperature());
