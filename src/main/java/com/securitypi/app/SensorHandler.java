@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
  */
 public class SensorHandler {
     private final double MIN_TEMP = -30.0;
-    private final double MAX_TEMP = 50.0;
+    private final double MAX_TEMP = 100.0;
 
     private boolean state;
 
@@ -46,6 +46,7 @@ public class SensorHandler {
 
         if(temperature > MAX_TEMP || temperature < MIN_TEMP) {
             // Sensor values are out of range. Probably a malfunction.
+            return -100.0;
         }
 
         return Math.round(temperature*10)/10.0d;
