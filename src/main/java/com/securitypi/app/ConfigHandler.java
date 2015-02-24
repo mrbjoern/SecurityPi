@@ -11,12 +11,13 @@ public class ConfigHandler {
 
     private static String logfilePath;
     private static String logfileName;
+    private static int maxsize;
+    private static int maxlines;
     private static int timeInterval;
 
     ConfigHandler() {
         // Config file should be in the root directory of SecurityPi.
         configFile = new File(System.getProperty("user.dir") + "/src/main/resources/config.txt");
-        System.out.println(configFile.toString());
 
         // We must check if the config file exists. If not, an error
         // should be reported.
@@ -46,8 +47,28 @@ public class ConfigHandler {
         else return timeInterval;
     }
 
-    public static String getConfigFile() {
+    /**
+     * Get the full file path of the log file.
+     * @return Path to log file
+     */
+    public static String getLogFile() {
         return logfilePath + logfileName;
+    }
+
+    /**
+     * Get the max file size of the log file in kB
+     * @return Max file size
+     */
+    public static int getMaxsize() {
+        return maxsize;
+    }
+
+    /**
+     * Get the max number of lines the log file may contain.
+     * @return Max number of lines
+     */
+    public static int getMaxlines() {
+        return maxlines;
     }
 
     /**
@@ -86,6 +107,12 @@ public class ConfigHandler {
                     }
                     else if(line.contains("log.name")) {
                         logfileName = splitParameters(line);
+                    }
+                    else if(line.contains("log.maxsize")) {
+                        maxsize = Integer.parseInt(splitParameters(line));
+                    }
+                    else if(line.contains("log.maxlines")) {
+                        maxlines = Integer.parseInt(splitParameters(line));
                     }
                 }
 

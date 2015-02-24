@@ -1,6 +1,5 @@
 package com.securitypi.app;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -8,17 +7,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Handles logging of events to logfile.
+ * Handles logging of events to logfile. Path to logfile should
+ * be defined in the config.txt file.
  */
 public final class LogModule {
 
-    // TODO: Implement static class for handling default config etc.
-
-    private static String pathToLogfile;
-    private static String logfileName;
-
     /**
-     * Default constructor. Use predefined path and filename.
+     * This is a final class with only static methods. No constructor
+     * is needed.
      */
     private LogModule() {
     }
@@ -65,8 +61,10 @@ public final class LogModule {
      */
     private static boolean writeToLog(String message) {
 
+        // TODO: Implement max size and lines to file.
+
         // Get the logfile from config.
-        String filename = ConfigHandler.getConfigFile();
+        String filename = ConfigHandler.getLogFile();
 
         // Message to be written.
         String logMessage = getCurrentDate() + " - " + message;

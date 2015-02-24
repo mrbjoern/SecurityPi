@@ -1,16 +1,30 @@
-### Config file for SecurityPi
+### Config file for SecurityPi ###
 #
 #
-#   SENSOR READING
+### SENSOR READING ###
 #
-#   Time interval on regular readings in seconds.
+#   Time interval on regular readings in seconds. Reading intervals
+#   should not be to short. This may use a lot of CPU and fill the
+#   logfile with unnecessary information.
 reading.time=60
 #
 #
-#   LOGGING
+### LOGGING ###
 #
-#   Path to logfile. Default is SecurityPi's root folder
+#   Path to logfile. Default is /home/USER/securitypi/log/
 #   log.path=/path/to/file/
 #
 #   Name of logfile. Default is log.txt
 #   log.name=default.txt
+#
+#   Max file size of logfile (in kB). If no file size is set, a max
+#   number of lines should be used instead. Or else the file will
+#   quickly fill the memory card on the RaspberryPi. A value of 0
+#   will be treated as no size is set.
+#   log.maxsize=2048
+#
+#   Max number of lines in logfile. Should be set if no max file
+#   size is given. If both max file size and max line numbers are
+#   are set, any who happens first will limit the file. A value of 0
+#   will be treated as no size is set.
+#   log.maxlines=10000
