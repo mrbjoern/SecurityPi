@@ -53,6 +53,14 @@ public class SensorHandler {
     }
 
     /**
+     * Check if motion is detected.
+     * @return True if motion, false if not.
+     */
+    public boolean getMotion() {
+        return false;
+    }
+
+    /**
      * Start the handler, listening and writing to components.
      * @return True if everything went OK.
      */

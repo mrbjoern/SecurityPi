@@ -10,7 +10,10 @@ public class ModuleController {
     private ConfigHandler ch;
 
     private boolean state;
+
     private SensorHandler sensorHandler;
+    private EventLogger eventLogger;
+    private Thread eventLoggerThread;
 
     // private final GpioController gpio = GpioFactory.getInstance();
 
@@ -43,7 +46,7 @@ public class ModuleController {
             LogModule.addSystemEventToLog("Initialisation of sensors failed. System will not report activity on sensors.");
         }
 
-        System.out.println(sensorHandler.getTemperature());
+        startListener();
     }
 
     /**
@@ -52,5 +55,29 @@ public class ModuleController {
      */
     public boolean getState() {
         return state;
+    }
+
+    private void startListener() {
+        eventLogger = new EventLogger(sensorHandler);
+        eventLoggerThread = new Thread(eventLogger);
+
+        LogModule.addSystemEventToLog("Starting to log events with " + ConfigHandler.getTimeInterval() + " seconds interval.");
+
+        eventLoggerThread.start();
+    }
+
+    private void stopListener() throws InterruptedException {
+        LogModule.addSystemEventToLog("Stopping to log events.");
+        if(eventLoggerThread != null) {
+            eventLogger.terminate();
+            eventLoggerThread.join();
+        }
+    }
+
+    /**
+     * Notify server on events.
+     */
+    private void notifyOnEvent(String event) {
+
     }
 }

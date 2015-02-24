@@ -27,7 +27,7 @@ public final class LogModule {
      * @return True if line was added successfully.
      */
     public static boolean addSensorReadingToLog(double temperature, boolean motionDetected) {
-        String message = "Temp: " + temperature + "C, Motion detected: " + motionDetected;
+        String message = "Temp: " + temperature + "C\tMotion detected: " + motionDetected;
 
         return writeToLog(message);
     }
