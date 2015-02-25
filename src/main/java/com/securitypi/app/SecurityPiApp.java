@@ -20,12 +20,6 @@ public class SecurityPiApp {
      */
     public static void main(String[] args) {
 
-        // TODO: Start module controller and set up sensors.
-
-        // TODO: Implement logging from sensors.
-
-        // TODO: Implement interface for interaction with server.
-
         if(args.length < 0) {
             if(args[0].compareTo("-v") == 0 || args[0].compareTo("--version") == 0) {
                 System.out.println(getVersion());
