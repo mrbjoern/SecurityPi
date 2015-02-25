@@ -18,6 +18,7 @@ public class ModuleController {
     private boolean motionDetection;
 
     private SensorHandler sensorHandler;
+
     private EventLogger eventLogger;
     private Thread eventLoggerThread;
 
@@ -46,9 +47,12 @@ public class ModuleController {
             LogModule.addSystemEventToLog("Sensor components started successfully.");
             state = true;
 
+            // We can start the green LED now.
+            startGreenLED();
+
             // If the sensors are up and running, a listener should be set up
             // to check the activity on sensors on a specified time interval.
-            startListener();
+            startEventLogger();
         }
         else {
             LogModule.addSystemEventToLog("Initialisation of sensors failed. System will not report activity on sensors.");
@@ -67,7 +71,7 @@ public class ModuleController {
      * Start listening on regular events. This process should
      * run whether motion detection is active or not.
      */
-    private void startListener() {
+    private void startEventLogger() {
         eventLogger = new EventLogger(sensorHandler);
         eventLoggerThread = new Thread(eventLogger);
 
@@ -80,7 +84,7 @@ public class ModuleController {
      * Should only be triggered on system shutdown.
      * @throws InterruptedException
      */
-    private void stopListener() throws InterruptedException {
+    private void stopEventLogger() throws InterruptedException {
         LogModule.addSystemEventToLog("Stopping to log events.");
         if(eventLoggerThread != null) {
             eventLogger.terminate();
