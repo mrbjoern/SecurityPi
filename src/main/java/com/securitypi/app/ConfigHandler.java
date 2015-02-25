@@ -18,10 +18,28 @@ public class ConfigHandler {
     private static String serverIP;
     private static String serverPort;
 
+    /**
+     * Default constructor if no config file is specified.
+     */
     ConfigHandler() {
+        // No config file is specified, fall back to default config file.
         // Config file should be in the root directory of SecurityPi.
         configFile = new File(System.getProperty("user.dir") + "/src/main/resources/config.txt");
 
+        initialize();
+    }
+
+    /**
+     * Special constructor used when another config file is specified.
+     * @param configFilePath Path to config file.
+     */
+    ConfigHandler(String configFilePath) {
+        configFile = new File(configFilePath);
+
+        initialize();
+    }
+
+    private void initialize() {
         // We must check if the config file exists. If not, an error
         // should be reported.
 
@@ -80,7 +98,7 @@ public class ConfigHandler {
      */
     private void checkConfig() {
         if(timeInterval < 1) {
-            timeInterval = 60;
+            timeInterval = 1800;
         }
         if(logfileName == null) {
             logfileName = "log.txt";
@@ -90,6 +108,12 @@ public class ConfigHandler {
         }
         if(maxsize < 1) {
             maxsize = 2048;
+        }
+        if(serverIP == null) {
+            serverIP = "127.0.0.1";
+        }
+        if(serverPort == null) {
+            serverPort = "4121";
         }
 
         createDirectory(logfilePath);

@@ -1,0 +1,11 @@
+### Config file for SecurityPi ###
+#   For testing purposes only.
+#
+reading.time=60
+#
+server.ip=192.168.0.1
+server.port=4142
+#
+log.path=/home/mrbjoern/securitypi/log/
+log.name=log.txt
+log.maxsize=2048
