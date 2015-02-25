@@ -1,5 +1,6 @@
 package com.securitypi.app;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -9,6 +10,10 @@ import java.util.Date;
 /**
  * Handles logging of events to logfile. Path to logfile should
  * be defined in the config.txt file.
+ *
+ * Log files are for logging purpose only. To avoid enormous file
+ * sizes a max file size should be set in config.txt. The system
+ * will also hold a backup of up to one max size log file.
  */
 public final class LogModule {
 
@@ -60,11 +65,18 @@ public final class LogModule {
      * @return True if write is successful.
      */
     private static boolean writeToLog(String message) {
-
-        // TODO: Implement max size and lines to file.
-
         // Get the logfile from config.
         String filename = ConfigHandler.getLogFile();
+
+        // Check if the size of the logfile is not to big.
+        // If the file is to big, it will be taken a temporary
+        // backup before the logfile is eventually deleted.
+        long sizeOfLogFile = getLogFileSize(filename);
+        long maxSize = ConfigHandler.getMaxsize() * 1000;
+
+        if(sizeOfLogFile >= maxSize) {
+            backupLogFile(filename);
+        }
 
         // Message to be written.
         String logMessage = getCurrentDate() + " - " + message;
@@ -80,5 +92,31 @@ public final class LogModule {
         }
 
         return true;
+    }
+
+    /**
+     * Renames current logfile to FILE.bak, if this file already
+     * exists, it will be deleted.
+     * @param path Path to logfile
+     */
+    private static void backupLogFile(String path) {
+        File logfile = new File(path);
+        File backupFile = new File(path + ".bak");
+
+        if(backupFile.exists()) {
+            if(!backupFile.delete()) {
+                System.err.println("Error deleting old backup file. Please check permissions.");
+            }
+        }
+
+        if(!logfile.renameTo(new File(path + ".bak"))) {
+            System.err.println("Error in taking backup of logfile. Another process might use the logfile.");
+        }
+    }
+
+    private static long getLogFileSize(String path) {
+        File logfile = new File(path);
+
+        return logfile.length();
     }
 }

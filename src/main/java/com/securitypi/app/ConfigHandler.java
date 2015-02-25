@@ -12,7 +12,6 @@ public class ConfigHandler {
     private static String logfilePath;
     private static String logfileName;
     private static int maxsize;
-    private static int maxlines;
 
     private static int timeInterval;
 
@@ -67,14 +66,6 @@ public class ConfigHandler {
         return maxsize;
     }
 
-    /**
-     * Get the max number of lines the log file may contain.
-     * @return Max number of lines
-     */
-    public static int getMaxlines() {
-        return maxlines;
-    }
-
     public static String getServerIP() {
         return serverIP;
     }
@@ -96,6 +87,9 @@ public class ConfigHandler {
         }
         if(logfilePath == null) {
             logfilePath = System.getProperty("user.home") + "/securitypi/log/";
+        }
+        if(maxsize < 1) {
+            maxsize = 2048;
         }
 
         createDirectory(logfilePath);
@@ -122,9 +116,6 @@ public class ConfigHandler {
                     }
                     else if(line.contains("log.maxsize")) {
                         maxsize = Integer.parseInt(splitParameters(line));
-                    }
-                    else if(line.contains("log.maxlines")) {
-                        maxlines = Integer.parseInt(splitParameters(line));
                     }
                     else if(line.contains("server.ip")) {
                         serverIP = splitParameters(line);
@@ -163,9 +154,14 @@ public class ConfigHandler {
         if(!dirPath.exists()) {
             // Directory does not exist, and we must create it.
             try {
-                dirPath.mkdirs();
-                System.out.println("New path created at " + path);
-                return true;
+                if(!dirPath.mkdirs()) {
+                    System.err.println("Directory could not be created.");
+                    return false;
+                }
+                else {
+                    System.out.println("New path created at " + path);
+                    return true;
+                }
             }
             catch (SecurityException e) {
                 System.err.println("Directory could not be created. Check permissions.");
