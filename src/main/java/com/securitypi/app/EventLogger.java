@@ -1,8 +1,9 @@
 package com.securitypi.app;
 
 /**
- * Listens on the sensors from SensorHandler. Logs events at
- * given times. Should only run when the controller is on.
+ * Read data from sensors and write to logfile on given
+ * intervals. May also be used to report the same data
+ * to the server app.
  */
 public class EventLogger implements Runnable {
 
@@ -23,9 +24,9 @@ public class EventLogger implements Runnable {
     public void run() {
         while(running) {
             try {
-                System.out.println("Thread is running.");
                 double temperature = sensorHandler.getTemperature();
                 boolean motion = sensorHandler.getMotion();
+                writeToServer(temperature, motion);
                 LogModule.addSensorReadingToLog(temperature, motion);
                 Thread.sleep(interval*1000);
             }
@@ -34,5 +35,12 @@ public class EventLogger implements Runnable {
             }
         }
 
+    }
+
+    private void writeToServer(double temperature, boolean motion) {
+        String serverIP = ConfigHandler.getServerIP();
+        String serverPort = ConfigHandler.getServerPort();
+
+        System.out.println("Writing data to " + serverIP + ":" + serverPort + " - Temperature: " + temperature + " Motion: " + motion);
     }
 }

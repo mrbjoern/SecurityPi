@@ -13,7 +13,11 @@ public class ConfigHandler {
     private static String logfileName;
     private static int maxsize;
     private static int maxlines;
+
     private static int timeInterval;
+
+    private static String serverIP;
+    private static String serverPort;
 
     ConfigHandler() {
         // Config file should be in the root directory of SecurityPi.
@@ -71,6 +75,14 @@ public class ConfigHandler {
         return maxlines;
     }
 
+    public static String getServerIP() {
+        return serverIP;
+    }
+
+    public static String getServerPort() {
+        return serverPort;
+    }
+
     /**
      * Check if system is configured properly, if not, fall back to
      * default values.
@@ -113,6 +125,12 @@ public class ConfigHandler {
                     }
                     else if(line.contains("log.maxlines")) {
                         maxlines = Integer.parseInt(splitParameters(line));
+                    }
+                    else if(line.contains("server.ip")) {
+                        serverIP = splitParameters(line);
+                    }
+                    else if(line.contains("server.port")) {
+                        serverPort = splitParameters(line);
                     }
                 }
 

@@ -9,6 +9,15 @@
 reading.time=60
 #
 #
+### Server ###
+#
+#   The IP address of the SecurityPi server. Should be 127.0.0.1 if
+#   run locally.
+server.ip=192.168.0.1
+#   Port number used on server. Standard port is 4142
+server.port=4142
+#
+#
 ### LOGGING ###
 #
 #   Path to logfile. Default is /home/USER/securitypi/log/
