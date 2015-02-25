@@ -5,11 +5,17 @@ package com.securitypi.app;
  * controller is responsible for starting different components
  * and modules, logging events to logfile and handling input
  * from sensor components.
+ *
+ * The module controller should start handling components on
+ * button press or with a command sent by server. Red and green
+ * LED indicates if the module controller is active and listening
+ * on sensors.
  */
 public class ModuleController {
     private ConfigHandler ch;
 
     private boolean state;
+    private boolean motionDetection;
 
     private SensorHandler sensorHandler;
     private EventLogger eventLogger;
@@ -32,6 +38,7 @@ public class ModuleController {
         LogModule.addSystemEventToLog("System started.");
 
         state = false;
+        motionDetection = false;
 
         sensorHandler = new SensorHandler();
 
@@ -41,12 +48,11 @@ public class ModuleController {
 
             // If the sensors are up and running, a listener should be set up
             // to check the activity on sensors on a specified time interval.
+            startListener();
         }
         else {
             LogModule.addSystemEventToLog("Initialisation of sensors failed. System will not report activity on sensors.");
         }
-
-        startListener();
     }
 
     /**
@@ -57,6 +63,10 @@ public class ModuleController {
         return state;
     }
 
+    /**
+     * Start listening on regular events. This process should
+     * run whether motion detection is active or not.
+     */
     private void startListener() {
         eventLogger = new EventLogger(sensorHandler);
         eventLoggerThread = new Thread(eventLogger);
@@ -66,6 +76,10 @@ public class ModuleController {
         eventLoggerThread.start();
     }
 
+    /**
+     * Should only be triggered on system shutdown.
+     * @throws InterruptedException
+     */
     private void stopListener() throws InterruptedException {
         LogModule.addSystemEventToLog("Stopping to log events.");
         if(eventLoggerThread != null) {
@@ -75,9 +89,34 @@ public class ModuleController {
     }
 
     /**
-     * Notify server on events.
+     * Start the green LED
+     * @return True if started
      */
-    private void notifyOnEvent(String event) {
+    private boolean startGreenLED() {
+        return true;
+    }
 
+    /**
+     * Stop the green LED
+     * @return True if stopped
+     */
+    private boolean stopGreenLED() {
+        return true;
+    }
+
+    /**
+     * Start the red LED
+     * @return True if started
+     */
+    private boolean startRedLED() {
+        return true;
+    }
+
+    /**
+     * Stop the red LED
+     * @return True if stopped
+     */
+    private boolean stopRedLED() {
+        return true;
     }
 }
