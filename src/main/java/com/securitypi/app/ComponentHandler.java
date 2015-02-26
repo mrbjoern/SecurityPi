@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
  * temperature sensor. The sensor handler should not be handling reading
  * and writing to components like LEDs or buttons.
  */
-public class SensorHandler {
+public class ComponentHandler {
     // --- Temperature sensor ---
     // This is the sensor range with +/- 0.5 degrees accuracy. Measuring
     // temperatures outside of this range should not be common and should
@@ -27,7 +27,7 @@ public class SensorHandler {
     /**
      * Set up sensors. Run sanity checks.
      */
-    public SensorHandler() {
+    public ComponentHandler() {
         state = false;
 
         // Start the component handler.

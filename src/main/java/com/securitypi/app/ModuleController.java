@@ -1,5 +1,8 @@
 package com.securitypi.app;
 
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
+
 /**
  * Module for controlling interfaces and other modules. The
  * controller is responsible for starting different components
@@ -17,12 +20,12 @@ public class ModuleController {
     private boolean state;
     private boolean motionDetection;
 
-    private SensorHandler sensorHandler;
+    private ComponentHandler componentHandler;
 
     private EventLogger eventLogger;
     private Thread eventLoggerThread;
 
-    // private final GpioController gpio = GpioFactory.getInstance();
+    private final GpioController gpio = GpioFactory.getInstance();
 
     /**
      * When initialized, the module is inactive and sensors
@@ -41,9 +44,9 @@ public class ModuleController {
         state = false;
         motionDetection = false;
 
-        sensorHandler = new SensorHandler();
+        componentHandler = new ComponentHandler();
 
-        if(sensorHandler.getState()) {
+        if(componentHandler.getState()) {
             LogModule.addSystemEventToLog("Sensor components started successfully.");
             state = true;
 
@@ -72,7 +75,7 @@ public class ModuleController {
      * run whether motion detection is active or not.
      */
     private void startEventLogger() {
-        eventLogger = new EventLogger(sensorHandler);
+        eventLogger = new EventLogger(componentHandler);
         eventLoggerThread = new Thread(eventLogger);
 
         LogModule.addSystemEventToLog("Starting to log events with " + ConfigHandler.getTimeInterval() + " seconds interval.");

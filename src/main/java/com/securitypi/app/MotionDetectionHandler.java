@@ -10,11 +10,11 @@ public class MotionDetectionHandler implements Runnable {
 
     private volatile boolean active;
 
-    private SensorHandler sensorHandler;
+    private ComponentHandler componentHandler;
 
-    MotionDetectionHandler(SensorHandler sh) {
+    MotionDetectionHandler(ComponentHandler sh) {
         active = false;
-        sensorHandler = sh;
+        componentHandler = sh;
     }
 
     public void terminate() {

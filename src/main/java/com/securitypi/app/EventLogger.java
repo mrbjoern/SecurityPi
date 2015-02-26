@@ -11,10 +11,10 @@ public class EventLogger implements Runnable {
 
     private volatile boolean running = true;
     private int interval;
-    private SensorHandler sensorHandler;
+    private ComponentHandler componentHandler;
 
-    EventLogger(SensorHandler sh) {
-        sensorHandler = sh;
+    EventLogger(ComponentHandler sh) {
+        componentHandler = sh;
         interval = ConfigHandler.getTimeInterval();
     }
 
@@ -26,8 +26,8 @@ public class EventLogger implements Runnable {
     public void run() {
         while(running) {
             try {
-                double temperature = sensorHandler.getTemperature();
-                boolean motion = sensorHandler.getMotion();
+                double temperature = componentHandler.getTemperature();
+                boolean motion = componentHandler.getMotion();
                 writeToServer(temperature, motion);
                 LogModule.addSensorReadingToLog(temperature, motion);
                 Thread.sleep(interval*1000);
