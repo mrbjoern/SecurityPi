@@ -18,13 +18,25 @@ public class ConfigHandler {
     private static String serverIP;
     private static String serverPort;
 
+    // Pins
+    private static int pinGreenLED;
+    private static int pinRedLED;
+    private static int pinTemperature;
+    private static int pinMotion;
+    private static int pinButtonOut;
+    private static int pinButtonIn;
+
+    private static String temperatureSensorID;
+
     /**
      * Default constructor if no config file is specified.
      */
     ConfigHandler() {
         // No config file is specified, fall back to default config file.
         // Config file should be in the root directory of SecurityPi.
-        configFile = new File(System.getProperty("user.dir") + "/src/main/resources/config.txt");
+        //configFile = new File(System.getProperty("user.dir") + "/src/main/resources/config.txt");
+        configFile = new File(System.getProperty("user.dir") + "/classes/config.txt");
+        System.out.println(configFile.getAbsoluteFile());
 
         initialize();
     }
@@ -92,6 +104,10 @@ public class ConfigHandler {
         return serverPort;
     }
 
+    public static String getTemperatureSensorID() {
+        return temperatureSensorID;
+    }
+
     /**
      * Check if system is configured properly, if not, fall back to
      * default values.
@@ -147,6 +163,27 @@ public class ConfigHandler {
                     else if(line.contains("server.port")) {
                         serverPort = splitParameters(line);
                     }
+                    else if(line.contains("pin.LEDgreen")) {
+                        pinGreenLED = Integer.parseInt(splitParameters(line));
+                    }
+                    else if(line.contains("pin.LEDred")) {
+                        pinRedLED = Integer.parseInt(splitParameters(line));
+                    }
+                    else if(line.contains("pin.temperature")) {
+                        pinTemperature = Integer.parseInt(splitParameters(line));
+                    }
+                    else if(line.contains("pin.motion")) {
+                        pinMotion = Integer.parseInt(splitParameters(line));
+                    }
+                    else if(line.contains("pin.buttonout")) {
+                        pinButtonOut = Integer.parseInt(splitParameters(line));
+                    }
+                    else if(line.contains("pin.buttonin")) {
+                        pinButtonIn = Integer.parseInt(splitParameters(line));
+                    }
+                    else if(line.contains("reading.temperatureID")) {
+                        temperatureSensorID = splitParameters(line);
+                    }
                 }
 
             }
@@ -162,8 +199,6 @@ public class ConfigHandler {
             // Something wrong with file.
             e.printStackTrace();
         }
-
-
     }
 
     /**

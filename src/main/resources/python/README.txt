@@ -1,0 +1,1 @@
+Python scripts used to handle raspberry pi sensors.

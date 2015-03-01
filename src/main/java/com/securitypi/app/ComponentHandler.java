@@ -1,5 +1,6 @@
 package com.securitypi.app;
 
+import java.io.*;
 import java.text.DecimalFormat;
 
 /**
@@ -50,14 +51,43 @@ public class ComponentHandler {
 
         // TODO: Implement proper temperature reading
 
-        double temperature = Math.random() * (40.0 - (-20.0) + (-20.0));
+        String temperatureFile = "/sys/bus/w1/devices/" + ConfigHandler.getTemperatureSensorID() + "/w1_slave";
+        double temperature;
+
+        try {
+            FileReader fr = new FileReader(temperatureFile);
+            BufferedReader br = new BufferedReader(fr);
+
+            String line;
+
+            while((line = br.readLine()) != null) {
+                if(line.contains("t=")) {
+                    String[] stringParts = line.split("=");
+                    temperature = Double.parseDouble(stringParts[1]) / 1000;
+                    System.out.println(temperature);
+                    br.close();
+                    fr.close();
+                    return temperature;
+                }
+            }
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return 0.0;
+
+        /*double temperature = Math.random() * (40.0 - (-20.0) + (-20.0));
 
         if(temperature > MAX_TEMP || temperature < MIN_TEMP) {
             // Sensor values are out of range. Probably a malfunction.
             return -100.0;
         }
 
-        return Math.round(temperature*10)/10.0d;
+        return Math.round(temperature*10)/10.0d;*/
     }
 
     /**

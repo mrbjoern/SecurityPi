@@ -25,8 +25,6 @@ public class ModuleController {
     private EventLogger eventLogger;
     private Thread eventLoggerThread;
 
-    private final GpioController gpio = GpioFactory.getInstance();
-
     /**
      * When initialized, the module is inactive and sensors
      * is turned OFF. Some sensors require some time to start
