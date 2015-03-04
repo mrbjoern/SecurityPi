@@ -18,7 +18,7 @@ pin.buttonin=15
 #   Time interval on regular readings in seconds. Reading intervals
 #   should not be to short. This may use a lot of CPU and fill the
 #   logfile with unnecessary information.
-reading.time=6
+reading.time=1800
 #   The temperature sensor is identified by ID. You can find this by
 #   looking in /sys/bus/w1/devices/. w1-gpio must be enabled.
 reading.temperatureID=28-000006a0858b
